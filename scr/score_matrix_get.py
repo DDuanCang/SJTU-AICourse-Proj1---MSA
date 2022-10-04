@@ -8,7 +8,7 @@ test_sequence_2 = 'KJOBLLXJKJPLUWGWOMOLIJBJALTUKLVLJSBHGBPGWSYKJBSVJSPMZJOWUWWP'
 # return: score matrix, size of the matrix
 
 
-def score_matrix_init(sequence_1, sequence_2, type):
+def score_matrix_get(sequence_1, sequence_2, type):
     score_array, score_array_init, form = score_matrix_create(
         sequence_1, sequence_2)
     if type == 'origin':
@@ -32,18 +32,16 @@ def score_matrix_create(sequence_1, sequence_2):
     # depth
     sequence_2 = sequence_2
     sequence_2_length = len(sequence_2)
-    form = {'length': sequence_1_length, 'depth': sequence_2_length}
+    form = {'length': sequence_1_length+1, 'depth': sequence_2_length+1}
     # create matrix by np.ones
-    score_array = np.ones((sequence_2_length, sequence_1_length, 2))
-    print('np.ones complete')
+    score_array = np.zeros((form['depth'], form['length'], 2))
     init_score_array = score_matrix_init(
         score_array, form['length'], form['depth'])
-    print('init complete')
+    print('complete init')
     return score_array, init_score_array, form
 
+
 # arguments: matrix,length of matrix,depth of matrix
-
-
 def score_matrix_init(score_array, length, depth):
     print('start init')
     score_array[0][0][0] = 0
@@ -55,7 +53,3 @@ def score_matrix_init(score_array, length, depth):
         score_array[i][0][0] = score_array[i - 1][0][0] + 3
         score_array[i][0][1] = 5
     return score_array
-
-
-test = score_matrix_init(test_sequence_1, test_sequence_2, 'init')
-print(test)

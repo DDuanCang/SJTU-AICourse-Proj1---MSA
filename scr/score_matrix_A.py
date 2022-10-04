@@ -7,7 +7,7 @@ GAP = 3
 
 # arguments: score_matrix,matrix length, matrix depth
 # return: filled_score_matrix
-def score_matrix_fill(score_array, length, depth, sequence1, sequence2):
+def score_matrix_A(score_array, length, depth, sequence1, sequence2):
     for i in range(1, depth):
         for j in range(1, length):
             least_cost, direction = cost_cal(
@@ -28,6 +28,7 @@ def score_matrix_fill(score_array, length, depth, sequence1, sequence2):
 # 3+5=7: move lean and down
 # 1+3+5=9: move right and lean and down
 def cost_cal(score_array, i, j, sequence1, sequence2):
+    # g(n)
     # cal gap move cost
     right = score_array[i][j-1][0] + GAP
     # cal match or mismatch cost
@@ -39,21 +40,25 @@ def cost_cal(score_array, i, j, sequence1, sequence2):
     # cal gap move cost
     down = score_array[i-1][j][0] + GAP
 
+    # h(n)
+    hn = (i + j)*3
+
     # least_cost = [right, lean, down]
+    # f(n) = g(n) + h(n)
     # case 1: only one way
-    if right < lean and right < down:
+    if (right + hn - 3) < (lean + hn - 6) and (right + hn - 3) < (down + hn - 3):
         return right, 1
-    if lean < right and lean < down:
+    if (lean + hn - 6) < (right + hn - 3) and (lean + hn - 6) < (down + hn - 3):
         return lean, 3
-    if down < right and down < lean:
+    if (down + hn - 3) < (right + hn - 3) and (down + hn - 3) < (lean + hn - 6):
         return down, 5
     # case 2: two ways
-    if right == lean and right < down:
+    if (right + hn - 3) == (lean + hn - 6) and (right + hn - 3) < (down + hn - 3):
         return right, 1+3
-    if lean == down and lean < right:
+    if (lean + hn - 6) == (down + hn - 3) and (lean + hn - 6) < (right + hn - 3):
         return lean, 3+5
-    if down == right and down < lean:
+    if (down + hn - 3) == (right + hn - 3) and (down + hn - 3) < (lean + hn - 6):
         return right, 5+1
     # case 3: three ways
-    if right == lean and lean == down:
+    if (right + hn - 3) == (lean + hn - 6) and (lean + hn - 6) == (down + hn - 3):
         return right, 1+3+5
