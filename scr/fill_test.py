@@ -1,28 +1,41 @@
 from score_matrix_get import score_matrix_get
 from score_matrix_fill import score_matrix_fill
 from score_matrix_A import score_matrix_A
-
+from load_data import load_database
 
 # test data
 test_sequence_1 = 'KJXXJAJKPXKJJXJKPXKJXXJAJKPXKJJXJKPXKJXXJAJKPXKJXXJAJKHXKJXXJAJKPXKJXXJAJKHXKJXX'
 test_sequence_2 = 'KJOBLLXJKJPLUWGWOMOLIJBJALTUKLVLJSBHGBPGWSYKJBSVJSPMZJOWUWWP'
 
+# query sequence
+query_sequence = [
+    'KJXXJAJKPXKJJXJKPXKJXXJAJKPXKJJXJKPXKJXXJAJKPXKJXXJAJKHXKJXXJAJKPXKJXXJAJKHXKJXX',
+    'ILOTGJJLABWTSTGGONXJMUTUXSJHKWJHCTOQHWGAGIWLZHWPKZULJTZWAKBWHXMIKLZJGLXBPAHOHVOLZWOSJJLPO',
+    'IHKKKRKKKKKKXGWGKKKPKSKKKKKBKKKPKHKKXKKBSKKPKWKKLKSKRKKWXKPKKBKKKPKTSKHKKKKLADKKYPKKKOPHKKBWWLPPWKK',
+    'MPPPJPXPGPJPPPXPPPJPJPPPXPPPPSPPJJJPPXXPPPPPJPPPXPPXIPJMMMXPKPSVGULMHHZPAWHTHKAAHHUPAONAPJSWPPJGA',
+    'IPPVKBKXWXKHSAPHVXXVOJMRAKKPJVLLJBWKOLLJKXHGXLLCPAJOBKPGXBATGXMPOMCVZTAXVPAGKXGOMJQOLJGWGKXLQ'
+]
+
+# database sequence
+database_sequence = load_database()
+
+'''
 test, form = score_matrix_get(test_sequence_1, test_sequence_2, 'init')
 
 length = form['length']
 depth = form['depth']
 
-test_filled = score_matrix_A(
-    test, form['length'], form['depth'], test_sequence_1, test_sequence_2)
-print(test[1])
-print("################################")
-print('test_sequence_1:'+str(len(test_sequence_1)))
-print('test_sequence_2:'+str(len(test_sequence_2)))
-print(form)
-print("################################")
-print(test_filled[-1])
-print(test_filled[depth-1][length-1][0])
-print(len(test_filled[0]))
+test_filled = score_matrix_A(test, form['length'], form['depth'], test_sequence_1, test_sequence_2)
+'''
+# print(test[1])
+# rint("################################")
+# print('test_sequence_1:'+str(len(test_sequence_1)))
+# print('test_sequence_2:'+str(len(test_sequence_2)))
+# print(form)
+# print("################################")
+# print(test_filled[-1])
+# print(test_filled[depth-1][length-1][0])
+# print(len(test_filled[0]))
 
 
 def get_result(filled_array, form):
@@ -33,7 +46,7 @@ def get_result(filled_array, form):
     result1 = []
     result2 = []
 
-    while(filled_array[depth-1][length-1][1] != 0):
+    while (filled_array[depth-1][length-1][1] != 0):
         if filled_array[depth-1][length-1][1] == 1 or filled_array[depth-1][length-1][1] == 4 or filled_array[depth-1][length-1][1] == 6 or filled_array[depth-1][length-1][1] == 9:
             result1.append(length-1)
             result2.append(-1)
@@ -55,6 +68,7 @@ def get_result(filled_array, form):
     return result1, result2
 
 
+'''
 a1, a2 = get_result(test_filled, form)
 print(a1, a2)
 print(len(a1), len(a2))
@@ -62,21 +76,43 @@ a1.reverse()
 a2.reverse()
 print(a1, a2)
 print(len(a1), len(a2))
+'''
 
-b1 = ''
-b2 = ''
-for i in range(max(len(a1), len(a2))):
-    if a1[i] == -1:
-        letter1 = '_'
-    else:
-        letter1 = test_sequence_1[a1[i]-1]
-    if a2[i] == -1:
-        letter2 = '_'
-    else:
-        letter2 = test_sequence_2[a2[i]-1]
-    b1 += letter1
-    b2 += letter2
-print(test_sequence_1)
-print(test_sequence_2)
-print(b1)
-print(b2)
+
+def print_sequence(a1, a2):
+    b1 = ''
+    b2 = ''
+    for i in range(max(len(a1), len(a2))):
+        if a1[i] == -1:
+            letter1 = '_'
+        else:
+            letter1 = test_sequence_1[a1[i]-1]
+        if a2[i] == -1:
+            letter2 = '_'
+        else:
+            letter2 = test_sequence_2[a2[i]-1]
+        b1 += letter1
+        b2 += letter2
+    print(b1)
+    print(b2)
+
+
+#test, form = score_matrix_get(test_sequence_1, test_sequence_2, 'init')
+
+
+least_cost = len(query_sequence[0]) * 4
+least_cost_records = []
+
+query_sequence = query_sequence[1]
+
+for i in range(len(database_sequence)):
+    test, form = score_matrix_get(
+        query_sequence, database_sequence[i], 'init')
+    length = form['length']
+    depth = form['depth']
+    test_filled = score_matrix_fill(
+        test, form['length'], form['depth'], query_sequence, database_sequence[i])
+    if least_cost > test_filled[-1][-1][0]:
+        least_cost_records.append([i, test_filled[-1][-1][0]])
+        least_cost = test_filled[-1][-1][0]
+print(least_cost_records)
