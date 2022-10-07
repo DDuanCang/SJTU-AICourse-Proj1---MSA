@@ -2,6 +2,9 @@ from score_matrix_get import score_matrix_get
 from score_matrix_fill import score_matrix_fill
 from score_matrix_A import score_matrix_A
 from load_data import load_database
+import time
+
+start = time.perf_counter()
 
 
 def get_result(filled_array, form):
@@ -61,6 +64,9 @@ query_sequence_list = [
     'IPPVKBKXWXKHSAPHVXXVOJMRAKKPJVLLJBWKOLLJKXHGXLLCPAJOBKPGXBATGXMPOMCVZTAXVPAGKXGOMJQOLJGWGKXLQ'
 ]
 
+query_sequences_list = ['IPZJJLMLTKJULOSTKTJOGLKJOBLTXGKTPLUWWKOMOYJBGALJUKLGLOSVHWBPGWSLUKOBSOPLOOKUKSARPPJ',
+                        'IWTJBGTJGJTWGBJTPKHAXHAGJJSJJPPJAPJHJHJHJHJHJHJHJHJPKSTJJUWXHGPHGALKLPJTPJPGVXPLBJHHJPKWPPDJSG']
+
 # database sequence
 database_sequence = load_database()
 
@@ -106,3 +112,8 @@ for j in range(len(query_sequence_list)):
                    database_sequence[fin_reasult[j][0]])
     print('cost:', fin_reasult[j][1])
     print('#############################################################################################')
+
+print('#############################################################################################')
+end = time.perf_counter()
+print('run time: ', round(end-start), 'seconds')
+

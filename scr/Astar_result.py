@@ -2,6 +2,9 @@ from score_matrix_get import score_matrix_get
 from score_matrix_fill import score_matrix_fill
 from score_matrix_A import score_matrix_A
 from load_data import load_database
+import time
+
+start = time.perf_counter()
 
 
 def get_result(filled_array, form):
@@ -76,8 +79,6 @@ for j in range(len(query_sequence_list)):
     for i in range(len(database_sequence)):
         test, form = score_matrix_get(
             query_sequence, database_sequence[i], 'init')
-        length = form['length']
-        depth = form['depth']
         test_filled = score_matrix_A(
             test, form['length'], form['depth'], query_sequence, database_sequence[i])
         if least_cost > test_filled[-1][-1][0]:
@@ -95,10 +96,8 @@ for j in range(len(query_sequence_list)):
     query_sequence = query_sequence_list[j]
     test, form = score_matrix_get(
         query_sequence, database_sequence[fin_reasult[j][0]], 'init')
-    length = form['length']
-    depth = form['depth']
     test_filled = score_matrix_A(
-        test, form['length'], form['depth'], query_sequence, database_sequence[i])
+        test, form['length'], form['depth'], query_sequence, database_sequence[fin_reasult[j][0]])
     seq1, seq2 = get_result(test_filled, form)
     seq1.reverse()
     seq2.reverse()
