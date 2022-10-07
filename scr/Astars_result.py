@@ -4,6 +4,8 @@ from score_matrix_A import score_matrix_A
 from load_data import load_database
 import time
 
+start = time.perf_counter()
+
 
 def get_result(filled_array, form):
     length = form['length']

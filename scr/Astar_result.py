@@ -105,3 +105,6 @@ for j in range(len(query_sequence_list)):
                    database_sequence[fin_reasult[j][0]])
     print('cost:', fin_reasult[j][1])
     print('#############################################################################################')
+print('#############################################################################################')
+end = time.perf_counter()
+print('run time: ', round(end-start), 'seconds')
