@@ -123,11 +123,6 @@ def test(model, device, test_loader):
 
 
 # 进行两次训练，第二次训练取第一次训练得出的hyperparameters
-'''
 for epoch in range(1, EPOCHS+1):
     train(model, DEVICE, train_loader, optimizer, epoch)
     test(model, DEVICE, test_loader)
-'''
-print(train_loader.data)
-
-print(test_loader.data)
